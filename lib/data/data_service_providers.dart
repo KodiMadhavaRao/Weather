@@ -9,8 +9,8 @@ import '../core/utils/local_storage/cache/cache_manager_impl.dart';
 import '../core/utils/local_storage/secure/secure_storage_manager.dart';
 import '../core/utils/local_storage/secure/secure_storage_manager_impl.dart';
 import 'data_source/local/user_local_data_source.dart';
-import 'data_source/remote/news_remote_data_source.dart';
 import 'data_source/remote/user_remote_data_source.dart';
+import 'data_source/remote/weather_remote_data_source.dart';
 
 part 'data_service_providers.g.dart';
 
@@ -59,6 +59,7 @@ UserRemoteDataSource userRemoteDataSource(UserRemoteDataSourceRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-NewsRemoteDataSource newsRemoteDataSource(NewsRemoteDataSourceRef ref) {
-  return NewsRemoteDataSource(ref.watch(apiManagerProvider));
+WeatherRemoteDataSource weatherRemoteDataSource(
+    WeatherRemoteDataSourceRef ref) {
+  return WeatherRemoteDataSource(ref.watch(apiManagerProvider));
 }

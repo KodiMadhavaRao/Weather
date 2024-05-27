@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/models/article/article.dart';
 import '../../presentation/ui/modals/alert_dialogs/custom_alert_dialog.dart';
 import '../../presentation/ui/modals/alert_dialogs/loading_alert_dialog.dart';
 import '../../presentation/ui/modals/bottom_sheets/logout/logout_bottom_sheet.dart';
@@ -11,7 +10,6 @@ import '../../presentation/ui/screens/landing/screens/home/home_screen.dart';
 import '../../presentation/ui/screens/landing/screens/settings/settings_screen.dart';
 import '../../presentation/ui/screens/language_selection/language_selection_screen.dart';
 import '../../presentation/ui/screens/login/login_screen.dart';
-import '../../presentation/ui/screens/news_detail/news_detail_screen.dart';
 import '../../presentation/ui/screens/onboarding/onboarding_screen.dart';
 import '../../presentation/ui/screens/splash/splash_screen.dart';
 import '../logger/logger_service.dart';
@@ -51,10 +49,7 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: SettingsRoute.page)
           ],
         ),
-        AutoRoute(
-          guards: [_authGuard],
-          page: NewsDetailRoute.page,
-        ),
+
         AutoRoute(
           guards: [_authGuard],
           page: LanguageSelectionRoute.page,

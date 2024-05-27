@@ -38,7 +38,8 @@ class UserCacheDto with HiveObjectMixin implements CacheDto<User, UserApiDto> {
   });
 
   @override
-  String get number => userName!; // change id to your unique identifier
+  String get number =>
+      AppConstants.userBoxKey; // change id to your unique identifier
 
   @override
   User toModel() => User(

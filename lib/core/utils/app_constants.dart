@@ -20,10 +20,46 @@ class AppConstants {
   ///Hive Adapter Ids
   //?TODO: Add Hive Adapter Ids
   static const int userAdapterId = 0;
+  static const int weatherAdapterId = 1;
+
+  static const int locationAdapterId = 2;
+
+  static const int currentAdapterId = 3;
+
+  static const int conditionAdapterId = 4;
+
+  static const int forecastAdapterId = 5;
+
+  static const int forecastdayAdapterId = 6;
+
+  static const int dayAdapterId = 7;
+
+  static const int astroAdapterId = 8;
+
+  static const int hourAdapterId = 9;
 
   ///Hive Box Keys
   //?TODO: Add Box Keys
   static const String userBoxKey = "userBox";
+//box keys
+
+  static const String hourBoxKey = "hourBoxKey";
+
+  static const String astroBoxKey = "astroBoxKey";
+
+  static const String dayBoxKey = "dayBoxKey";
+
+  static const String forecastdayBoxKey = "forecastdayBoxKey";
+
+  static const String forecastBoxKey = "forecastBoxKey";
+
+  static const String conditionBoxKey = "conditionBoxKey";
+
+  static const String currentBoxKey = "currentBoxKey";
+
+  static const String locationBoxKey = "locationBoxKey";
+
+  static const String weatherBoxKey = "weatherBoxKey";
 
   ///Static Messages
   static const String requestCancelledText = "Request is cancelled.";

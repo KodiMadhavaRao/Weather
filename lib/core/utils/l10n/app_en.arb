@@ -1,7 +1,7 @@
 {
   "apiError": "Error in API operation",
   "badRequestError": "400 Bad Request",
-  "boilerplateNews": "Boilerplate News",
+  "weatherUpdates": "Weather Updates",
   "boilerplateWelcomeMsg": "A Boilerplate App to let you get started for building the project",
   "cacheError": "Error in caching operation",
   "cancel": "Cancel",

@@ -75,7 +75,8 @@ class ApiManagerImpl extends ApiManager with SerializerMixin {
     //TODO: Please note this base url should end with "/"
     if (newBaseUrl == null) {
       final baseUrl = AppConfiguration.baseUrl;
-      return "$baseUrl$endPoint";
+      final apiKey = AppConfiguration.apiKey;
+      return "$baseUrl$endPoint?key=$apiKey";
     } else {
       return "$newBaseUrl$endPoint";
     }
