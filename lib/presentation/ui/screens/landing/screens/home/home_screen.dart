@@ -27,30 +27,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      requestPermission();
-      bool isEnabled = await checkPermissionStatus();
-      if (isEnabled) {
-        Position position = await _determinePosition();
-        ref
-            .read(weatherUpdatesNotifierProvider.notifier)
-            .getWeatherUpdates(position.latitude, position.longitude);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      fetchWeatherData();
     });
     super.initState();
-  }
-
-  Future<bool> checkPermissionStatus() async {
-    const permission = Permission.location;
-    return await permission.status.isGranted;
-  }
-
-  Future<void> requestPermission() async {
-    const permission = Permission.location;
-
-    if (await permission.isDenied) {
-      await permission.request();
-    }
   }
 
   @override
@@ -89,9 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         WeatherStateLoaded(weather: var weather) => RefreshIndicator(
             onRefresh: () async {
-              ref
-                  .read(weatherUpdatesNotifierProvider.notifier)
-                  .getWeatherUpdates(17.4435, 78.3772);
+              fetchWeatherData();
             },
             child: CustomScrollView(
               shrinkWrap: false,
@@ -212,5 +190,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     // If permissions are granted, return the current location
     return await Geolocator.getCurrentPosition();
+  }
+
+  void fetchWeatherData() async {
+    requestPermission();
+    bool isEnabled = await checkPermissionStatus();
+    if (isEnabled) {
+      Position position = await _determinePosition();
+      ref
+          .read(weatherUpdatesNotifierProvider.notifier)
+          .getWeatherUpdates(position.latitude, position.longitude);
+    }
+  }
+
+  Future<bool> checkPermissionStatus() async {
+    const permission = Permission.location;
+    return await permission.status.isGranted;
+  }
+
+  Future<void> requestPermission() async {
+    const permission = Permission.location;
+
+    if (await permission.isDenied) {
+      await permission.request();
+    }
   }
 }
