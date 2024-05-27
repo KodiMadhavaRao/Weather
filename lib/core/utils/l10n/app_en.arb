@@ -38,5 +38,7 @@
   "unAuthorizedRequestError": "401 Unauthorized Request",
   "unexpectedError": "Api Unexpected Error",
   "unkownError": "Unknow Error",
-  "updateCacheError": "Failed to update data to cache"
+  "updateCacheError": "Failed to update data to cache",
+  "password": "Password",
+  "login": "login"
 }

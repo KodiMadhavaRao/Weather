@@ -10,9 +10,8 @@ part 'user_api_dto.g.dart';
 @freezed
 class UserApiDto with _$UserApiDto implements ApiCacheDto<UserCacheDto> {
   const factory UserApiDto({
-    String? id,
-    required String name,
-    String? profileImage,
+    required String? userName,
+    required String? password,
     required AccountType accountType,
   }) = _UserApiDto;
   const UserApiDto._();
@@ -22,9 +21,8 @@ class UserApiDto with _$UserApiDto implements ApiCacheDto<UserCacheDto> {
 
   @override
   UserCacheDto toCacheDto() => UserCacheDto(
-        id: id,
-        name: name,
-        profileImage: profileImage,
+        userName: userName,
+        password: password,
         accountType: accountType.name,
       );
 }

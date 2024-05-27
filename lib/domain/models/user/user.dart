@@ -9,18 +9,16 @@ part 'user.freezed.dart';
 @freezed
 class User with _$User implements UICacheModel<UserCacheDto> {
   const factory User({
-    String? id,
-    required String name,
-    String? profileImage,
+    required String userName,
+    required String password,
     required AccountType accountType,
   }) = _User;
   const User._();
 
   @override
   UserCacheDto toCacheDto() => UserCacheDto(
-        id: id,
-        name: name,
-        profileImage: profileImage,
+        userName: userName,
+        password: password,
         accountType: accountType.name,
       );
 }

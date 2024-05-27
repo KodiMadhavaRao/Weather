@@ -4,6 +4,7 @@ import '../../domain/enums/account_type.dart';
 import '../../domain/models/user/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/user_repository.dart';
+import '../../domain/usecases/auth/auth_usecases.dart';
 import '../models/result/data_state.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -11,12 +12,13 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._userRepository);
 
   @override
-  Future<DataState<User>> login(AccountType accountType) async {
-    switch (accountType) {
+  Future<DataState<User>> login(LoginUseCaseParams loginUseCaseParams) async {
+    switch (loginUseCaseParams.accountType) {
       case AccountType.guest:
         return _userRepository.createUser(
-          "local_token_123234324324587",
-          accountType,
+          loginUseCaseParams.userName,
+          loginUseCaseParams.password,
+          loginUseCaseParams.accountType,
         );
       default:
         break;

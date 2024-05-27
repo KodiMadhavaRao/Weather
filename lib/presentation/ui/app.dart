@@ -87,7 +87,7 @@ class _AppState extends ConsumerState<App> with WidgetsBindingObserver {
             locale: localLanguage,
             supportedLocales: AppLoc.supportedLocale,
             localizationsDelegates: AppLoc.delegates,
-            title: "RiverPod Boilerplate",
+            title: "Weather App",
             debugShowCheckedModeBanner: false,
             themeMode: themeState.mode,
             theme: AppThemeLight().theme,

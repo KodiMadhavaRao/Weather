@@ -21,11 +21,14 @@ class LoginNotifier extends _$LoginNotifier {
   }
 
   Future<void> logIn(
+    String email,
+    String password,
     AccountType accountType, {
     required bool isSignInButton,
   }) async {
     state = LoginStateLoading(accountType: accountType);
-    final dataState = await _loginUserUseCase(accountType);
+    final dataState = await _loginUserUseCase(
+        LoginUseCaseParams(accountType, email, password));
     switch (dataState) {
       case DataStateSuccess<User>(data: var user):
         state = LoginStateSuccess(user: user);

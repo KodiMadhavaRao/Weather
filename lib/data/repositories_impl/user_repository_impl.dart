@@ -19,13 +19,13 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<DataState<User>> createUser(
-    String token,
-    AccountType accountType,
-  ) async {
-    final userResponse = await _userRemoteDataSource.createUser(accountType);
+      String userName, String password, AccountType accountType) async {
+    final userResponse =
+        await _userRemoteDataSource.createUser(userName, password, accountType);
     switch (userResponse) {
       case ApiResponseSuccess<UserApiDto>(data: UserApiDto data):
-        final tokenStatusState = await _userLocalDataSource.storeToken(token);
+        final tokenStatusState =
+            await _userLocalDataSource.storeToken(userName);
         switch (tokenStatusState) {
           case DataStateSuccess<bool>():
             return _userLocalDataSource.storeUser(data.toCacheDto());

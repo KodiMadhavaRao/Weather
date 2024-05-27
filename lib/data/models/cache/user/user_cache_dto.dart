@@ -13,42 +13,37 @@ class UserCacheDto with HiveObjectMixin implements CacheDto<User, UserApiDto> {
   static String boxKey = AppConstants.userBoxKey;
 
   @HiveField(0)
-  String? id;
+  String? userName;
 
   @HiveField(1)
-  String name;
+  String? password;
 
   @HiveField(2)
-  String? profileImage;
-
-  @HiveField(3)
   String accountType;
 
   @override
-  @HiveField(4)
+  @HiveField(3)
   String? syncTime;
 
   @override
-  @HiveField(5)
+  @HiveField(4)
   bool? isSynced;
 
   UserCacheDto({
-    this.id,
-    required this.name,
-    this.profileImage,
+    required this.userName,
+    required this.password,
     required this.accountType,
     this.syncTime,
     this.isSynced,
   });
 
   @override
-  String get number => id.toString(); // change id to your unique identifier
+  String get number => userName!; // change id to your unique identifier
 
   @override
   User toModel() => User(
-        id: id,
-        name: name,
-        profileImage: profileImage,
+        userName: userName ?? '',
+        password: password ?? '',
         accountType: AccountType.values.firstWhere(
           (e) => e.name == accountType,
           orElse: () => AccountType.guest,
@@ -57,9 +52,8 @@ class UserCacheDto with HiveObjectMixin implements CacheDto<User, UserApiDto> {
 
   @override
   UserApiDto toApiDto() => UserApiDto(
-        id: id,
-        name: name,
-        profileImage: profileImage,
+        userName: userName,
+        password: password,
         accountType: AccountType.values.firstWhere(
           (e) => e.name == accountType,
           orElse: () => AccountType.guest,
