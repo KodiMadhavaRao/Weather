@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../../core/utils/errors/app_exception.dart';
 import '../../../../../../core/utils/styles/dimensions/ui_dimensions.dart';
@@ -25,12 +27,30 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref
-          .read(weatherUpdatesNotifierProvider.notifier)
-          .getWeatherUpdates(17.4435, 78.3772);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      requestPermission();
+      bool isEnabled = await checkPermissionStatus();
+      if (isEnabled) {
+        Position position = await _determinePosition();
+        ref
+            .read(weatherUpdatesNotifierProvider.notifier)
+            .getWeatherUpdates(position.latitude, position.longitude);
+      }
     });
     super.initState();
+  }
+
+  Future<bool> checkPermissionStatus() async {
+    const permission = Permission.location;
+    return await permission.status.isGranted;
+  }
+
+  Future<void> requestPermission() async {
+    const permission = Permission.location;
+
+    if (await permission.isDenied) {
+      await permission.request();
+    }
   }
 
   @override
@@ -39,12 +59,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Padding(
       padding: UIDimensions.symmetricPaddingGeometry(horizontal: 16),
       child: switch (weatherUpdatesState) {
-        WeatherStateInitial() => const SizedBox.shrink(),
+        WeatherStateInitial() => ListView.separated(
+            itemBuilder: (context, index) => index == 0
+                ? const CommonShimmer(
+                    height: 200,
+                    width: double.infinity,
+                  )
+                : const CommonShimmer(
+                    height: 86,
+                    width: double.infinity,
+                  ),
+            separatorBuilder: (context, index) =>
+                UIDimensions.verticalSpaceSmall,
+            itemCount: 6,
+          ),
         WeatherStateLoading() => ListView.separated(
-            itemBuilder: (context, index) => const CommonShimmer(
-              height: 86,
-              width: double.infinity,
-            ),
+            itemBuilder: (context, index) => index == 0
+                ? const CommonShimmer(
+                    height: 200,
+                    width: double.infinity,
+                  )
+                : const CommonShimmer(
+                    height: 86,
+                    width: double.infinity,
+                  ),
             separatorBuilder: (context, index) =>
                 UIDimensions.verticalSpaceSmall,
             itemCount: 6,
@@ -148,5 +186,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           "Invalid datetime string format. Expected YYYY-MM-DD HH:MM:SS");
     }
     return parts[0]; // Return the first part (date)
+  }
+
+  Future<Position> _determinePosition() async {
+    // Check if location services are enabled
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled return an error message
+      return Future.error('Location services are disabled.');
+    }
+
+    // Check location permissions
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // If permissions are granted, return the current location
+    return await Geolocator.getCurrentPosition();
   }
 }
