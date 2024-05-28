@@ -9,4 +9,8 @@ abstract interface class WeatherRepository {
     double? latitude,
     double? longitude,
   );
+  Future<DataState<Weather>> fetchWeatherUpdates(
+    double? latitude,
+    double? longitude,
+  );
 }

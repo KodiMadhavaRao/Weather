@@ -8,6 +8,7 @@ import '../../../../../../core/utils/errors/app_exception.dart';
 import '../../../../../../core/utils/styles/dimensions/ui_dimensions.dart';
 import '../../../../../../domain/states/weather_state.dart';
 import '../../../../../providers/weather/weather_provider.dart';
+import '../../../../modals/alert_dialogs/app_setting_popup.dart';
 import '../../../../modals/snack_bar/snack_bar_factory.dart';
 import '../../../../widgets/custom_network_image.dart';
 import '../../../../widgets/custom_text.dart';
@@ -135,17 +136,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: switch (ex) {
               AppExceptionNetworkError() => NoConnectionCard(onPressed: () {
                   SnackbarFactory.noInternetCheck(ref, () async {
-                    await ref
-                        .read(weatherUpdatesNotifierProvider.notifier)
-                        .getWeatherUpdates(19.3, 23.6);
+                    fetchWeatherData();
                   });
                 }),
               _ => SomethingWentWrongCard(
                   onPressed: () {
                     SnackbarFactory.noInternetCheck(ref, () async {
-                      await ref
-                          .read(weatherUpdatesNotifierProvider.notifier)
-                          .getWeatherUpdates(19.3, 23.6);
+                      fetchWeatherData();
                     });
                   },
                 )
@@ -196,10 +193,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     requestPermission();
     bool isEnabled = await checkPermissionStatus();
     if (isEnabled) {
-      Position position = await _determinePosition();
-      ref
-          .read(weatherUpdatesNotifierProvider.notifier)
-          .getWeatherUpdates(position.latitude, position.longitude);
+      try {
+        Position position = await _determinePosition();
+        ref
+            .read(weatherUpdatesNotifierProvider.notifier)
+            .getWeatherUpdates(position.latitude, position.longitude);
+      } catch (e) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return const ShowAppSettingMessage(); // Show the MyPopup widget as the content of the dialog
+          },
+        );
+        SnackbarFactory.showError("Something went wrong");
+      }
     }
   }
 

@@ -23,5 +23,6 @@ AuthRepository authRepository(AuthRepositoryRef ref) {
 
 @Riverpod(keepAlive: true)
 WeatherRepository weatherRepository(WeatherRepositoryRef ref) {
-  return WeatherRepositoryImpl(ref.watch(weatherRemoteDataSourceProvider));
+  return WeatherRepositoryImpl(ref.watch(weatherRemoteDataSourceProvider),
+      ref.watch(weatherLocalDataSourceProvider));
 }

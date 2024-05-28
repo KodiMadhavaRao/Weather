@@ -9,6 +9,7 @@ import '../core/utils/local_storage/cache/cache_manager_impl.dart';
 import '../core/utils/local_storage/secure/secure_storage_manager.dart';
 import '../core/utils/local_storage/secure/secure_storage_manager_impl.dart';
 import 'data_source/local/user_local_data_source.dart';
+import 'data_source/local/weather_local_data_source.dart';
 import 'data_source/remote/user_remote_data_source.dart';
 import 'data_source/remote/weather_remote_data_source.dart';
 
@@ -47,6 +48,13 @@ ApiManager apiManager(ApiManagerRef ref) {
 UserLocalDataSource userLocalDataSource(UserLocalDataSourceRef ref) {
   return UserLocalDataSource(
     ref.watch(secureStorageManagerProvider),
+    ref.watch(cacheManagerProvider),
+  );
+}
+
+@Riverpod(keepAlive: true)
+WeatherLocalDataSource weatherLocalDataSource(WeatherLocalDataSourceRef ref) {
+  return WeatherLocalDataSource(
     ref.watch(cacheManagerProvider),
   );
 }
